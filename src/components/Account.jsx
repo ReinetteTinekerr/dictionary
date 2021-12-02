@@ -95,7 +95,7 @@ export default function Account({ email, username, loginSuccessCallback}) {
       </div> */}
 
       <div>
-        <button className="border-2 border-red-700 rounded-xl p-2 m-1 uppercase  hover:bg-red-400 font-bold" onClick={() => loginSuccessCallback(false,'', '')}>
+        <button className="border-2 border-red-700 rounded-xl p-2 px-8 m-1 uppercase  hover:bg-red-400 font-bold" onClick={() => loginSuccessCallback(false,'', '')}>
           Sign Out
         </button>
       </div>
