@@ -82,7 +82,7 @@ export default function Account() {
         </button>
         <button
           className="border-2 bg-green-300 border-green-700 rounded-xl px-4 p-2 m-1 uppercase  hover:bg-green-400 font-bold"
-          onClick={() => updateProfile}
+          onClick={updateProfile}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
