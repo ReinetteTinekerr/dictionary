@@ -4,17 +4,17 @@ import { supabase } from '../utils/supabaseClient'
 
 export default function Account() {
   const [loading, setLoading] = useState(false)
-  const { user, error, login, logout } = useContext(AuthContext);
+  const { user, error,  logout } = useContext(AuthContext);
   const [username, setUsername] = useState(null)
 
-  useEffect(() => {
-    getProfile()
-  }, [])
+  useEffect(async () => {
+    await getProfile()
+  }, [user])
 
   async function getProfile() {
     try {
       setLoading(true)
-
+      console.log('user is ', user.id)
       let { data, error, status } = await supabase
         .from('profiles')
         .select(`username`)
@@ -29,13 +29,13 @@ export default function Account() {
         setUsername(data.username)
       }
     } catch (error) {
-      alert(error.message)
+      // alert(error.message)
     } finally {
       setLoading(false)
     }
   }
 
-  async function updateProfile({ username}) {
+  async function updateProfile() {
     try {
       setLoading(true)
 
@@ -58,7 +58,6 @@ export default function Account() {
       setLoading(false)
     }
   }
-  console.log(user);
   return (
     <div className="flex flex-col justify-center h-screen items-center ">
       <div className="m-2">
@@ -83,7 +82,7 @@ export default function Account() {
         </button>
         <button
           className="border-2 bg-green-300 border-green-700 rounded-xl px-4 p-2 m-1 uppercase  hover:bg-green-400 font-bold"
-          onClick={() => updateProfile({ username })}
+          onClick={() => updateProfile}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}

@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react'
+import { NEXT_URL } from '../config'
 import AuthContext from '../src/context/authContext'
 import { supabase } from '../src/utils/supabaseClient'
 
@@ -58,3 +59,19 @@ export default function Auth({loginSuccessCallback}) {
     </div>
   )
 }
+
+export async function getServerSideProps() {
+  const response = await fetch(`${NEXT_URL}/api/user`).then((response) =>
+    response.json()
+  );
+  
+  const { user } = response;
+  
+  
+  if (user) {
+    return {
+      redirect: { destination: "/", permanent: false },
+    };
+  }
+  return { props: { user } };
+  }
