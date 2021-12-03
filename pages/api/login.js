@@ -18,7 +18,7 @@ export default async( req, res ) => {
 		// }
 	// }
 
-		const { email, password } = req.body;
+		const { email, password } = req.query;
 		let { user, error } = await supabase.auth.signIn({
 			email: email,
 			password: password,

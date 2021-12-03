@@ -21,11 +21,11 @@ export const AuthProvider = ({ children }) => {
     //   body: JSON.stringify({ identifier, password }),
 		// });
 		
-    const res = await fetch(`/api/login`, {
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
+    const res = await fetch(`/api/login?email=${email}&password=${password}`, {
+      // body: JSON.stringify({
+      //   email: email,
+      //   password: password,
+      // }),
       headers: {
         "Content-Type": "application/json",
       },
