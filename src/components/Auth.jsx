@@ -39,7 +39,7 @@ export default function Auth({loginSuccessCallback}) {
       <div className="">
         <h1 className="text-4xl font-bold m-3">Research work in Information Security and Assurance 1</h1>
         <h2 className="text-xl font-bold mb-10">Dictionary Attack Demo</h2>
-        <form className="flex flex-col items-center" method="POST" onSubmit={handleLogin}>
+        <form className="flex flex-col items-center" method="GET" onSubmit={handleLogin}>
           <input
             className="rounded-md block p-1 px-2 py-2 mb-2 w-96"
             type="email"
