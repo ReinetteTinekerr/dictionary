@@ -1,75 +1,69 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect ,useContext} from 'react'
+import AuthContext from '../context/authContext';
 import { supabase } from '../utils/supabaseClient'
 
-export default function Account({ email, username, loginSuccessCallback}) {
-  // const [loading, setLoading] = useState(true)
-  // const [username, setUsername] = useState(null)
-  // const [website, setWebsite] = useState(null)
-  // const [avatar_url, setAvatarUrl] = useState(null)
+export default function Account() {
+  const [loading, setLoading] = useState(false)
+  const { user, error, login, logout } = useContext(AuthContext);
+  const [username, setUsername] = useState(null)
 
-  // useEffect(() => {
-  //   getProfile()
-  // }, [session])
+  useEffect(() => {
+    getProfile()
+  }, [])
 
-  // async function getProfile() {
-  //   try {
-  //     setLoading(true)
-  //     const user = supabase.auth.user()
+  async function getProfile() {
+    try {
+      setLoading(true)
 
-  //     let { data, error, status } = await supabase
-  //       .from('profiles')
-  //       .select(`username`)
-  //       .eq('id', user.id)
-  //       .single()
+      let { data, error, status } = await supabase
+        .from('profiles')
+        .select(`username`)
+        .eq('id', user.id)
+        .single()
 
-  //     if (error && status !== 406) {
-  //       throw error
-  //     }
+      if (error && status !== 406) {
+        throw error
+      }
 
-  //     if (data) {
-  //       setUsername(data.username)
-  //       setWebsite(data.website)
-  //       setAvatarUrl(data.avatar_url)
-  //     }
-  //   } catch (error) {
-  //     alert(error.message)
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
+      if (data) {
+        setUsername(data.username)
+      }
+    } catch (error) {
+      alert(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
-  // async function updateProfile({ username, website, avatar_url }) {
-  //   try {
-  //     setLoading(true)
-  //     const user = supabase.auth.user()
+  async function updateProfile({ username}) {
+    try {
+      setLoading(true)
 
-  //     const updates = {
-  //       id: user.id,
-  //       username,
-  //       website,
-  //       avatar_url,
-  //       updated_at: new Date(),
-  //     }
+      const updates = {
+        id: user.id,
+        username,
+        updated_at: new Date(),
+      }
 
-  //     let { error } = await supabase.from('profiles').upsert(updates, {
-  //       returning: 'minimal', // Don't return the value after inserting
-  //     })
+      let { error } = await supabase.from('profiles').upsert(updates, {
+        returning: 'minimal', // Don't return the value after inserting
+      })
 
-  //     if (error) {
-  //       throw error
-  //     }
-  //   } catch (error) {
-  //     alert(error.message)
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
-
+      if (error) {
+        throw error
+      }
+    } catch (error) {
+      alert(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+  console.log(user);
   return (
     <div className="flex flex-col justify-center h-screen items-center ">
       <div className="m-2">
         <label htmlFor="email" className="font-bold m-2">Email</label>
-        <input className="rounded-md p-2 px-4 w-72" id="email" type="text" value={email} disabled />
+        <input className="rounded-md p-2 px-4 w-72" id="email" type="text" value={user?.email || ''}  disabled />
       </div>
 
       <div>
@@ -78,25 +72,21 @@ export default function Account({ email, username, loginSuccessCallback}) {
           className="rounded-md mb-5 p-2 px-4 w-72"
           id="username"
           type="text"
-          value={username || ''}
-          // onChange={(e) => setUsername(e.target.value)}
-          disabled
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
       </div>
 
-      {/* <div>
+      <div>
+      <button className="border-2 border-red-700 rounded-xl p-2 px-2 mx-14 m-1 uppercase  hover:bg-red-400 font-bold" onClick={logout}>
+          Log out
+        </button>
         <button
-          className="border-2 border-blue-700 rounded-xl p-2 m-1 uppercase  hover:bg-blue-400 font-bold"
-          onClick={() => updateProfile({ username, website, avatar_url })}
+          className="border-2 bg-green-300 border-green-700 rounded-xl px-4 p-2 m-1 uppercase  hover:bg-green-400 font-bold"
+          onClick={() => updateProfile({ username })}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
-        </button>
-      </div> */}
-
-      <div>
-        <button className="border-2 border-red-700 rounded-xl p-2 px-8 m-1 uppercase  hover:bg-red-400 font-bold" onClick={() => loginSuccessCallback(false,'', '')}>
-          Sign Out
         </button>
       </div>
     </div>
